@@ -1,39 +1,91 @@
-# GoogleBard
+Sure, here's a draft for the README.md:
 
-TODO: Delete this and the text below, and describe your gem
+markdown
+Copy code
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/google_bard`. To experiment with that code, run `bin/console` for an interactive prompt.
+# Google Bard
+
+[![BardAPI](https://img.shields.io/badge/pypi-BardAPI-black)](https://pypi.org/project/BardAPI/)
+
+Google Bard is a Ruby gem adaptation of the Python package [BardAPI](https://github.com/dsdanielpark/BardAPI). This Python package is using reverse engineering to access Bard in an unofficial way, allowing developers to generate text completions with an API.
+
+## Demo
+
+I actually made this gem as wanted Bard for my latest project: a WhastsApp bot supercharged with AI. Check it out here: [ciel.chat](https://ciel.chat)
+
+## Disclamer
+
+This gem is exploiting reverse engineering for Bard, and it might fail in the future due to Google's code evolutions. Not sure yet wether I will maintain it or change into the official API when it's live. Feel free to contribute.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+You can install the gem by adding it to your Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
+```ruby
+gem 'google_bard'
+```
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+Then run:
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+```ruby
+bundle install
+```
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+Or install it yourself:
 
-## Usage
+```ruby
+gem install google_bard
+```
 
-TODO: Write usage instructions here
+### Authentication
 
-## Development
+1. Visit https://bard.google.com/
+2. `F12` for console
+3. Session: Application → Cookies → Copy the value of `__Secure-1PSID` cookie.
+   -> This is your token.
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+### Usage
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+First, require the gem in your code:
 
-## Contributing
+```ruby
+require 'google_bard'
+```
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/google_bard. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/google_bard/blob/master/CODE_OF_CONDUCT.md).
+Initialize the Bard object:
 
-## License
+```ruby
+bard = GoogleBard.new(token, timeout, proxies)
+```
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+Parameters:
 
-## Code of Conduct
+- token (required): Your \_\_Secure-1PSID value from Google Bard.
+- timeout (optional): Timeout for the requests (default is 20 seconds).
+- proxies (optional): Proxy configuration if you want to use proxies.
+- Then call the completion method with your text input:
 
-Everyone interacting in the GoogleBard project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/google_bard/blob/master/CODE_OF_CONDUCT.md).
+```ruby
+response = bard.completion("Hello, world!")
+```
+
+The completion method returns an `OpenStruct` with the following attributes:
+
+- success: Whether the request was successful.
+- content: The generated completion.
+- conversation_id: The ID of the conversation.
+- response_id: The ID of the response.
+- factuality_queries: The factuality queries.
+- text_query: The text query.
+- choices: The choices provided by the completion.
+
+```ruby
+response.success
+response.content # -> completion if success, error if not
+```
+
+Contributing
+Bug reports and pull requests are welcome on GitHub at github.com/username/google_bard.
+
+License
+The gem is available as open source under the terms of the MIT License.
