@@ -52,7 +52,10 @@ class GoogleBard
       cookies: { '__Secure-1PSID' => @token },
       timeout: @timeout
     )
-
+    puts "*********************"
+    puts "Google Answer:"
+    puts response
+    puts "*********************"
     handle_response(response)
   end
 
