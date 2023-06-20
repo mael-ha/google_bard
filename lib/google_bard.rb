@@ -46,13 +46,16 @@ class GoogleBard
     # Send the request with the payload in the body
     response = HTTParty.post(
       'https://bard.google.com/_/BardChatUi/data/assistant.lamda.BardFrontendService/StreamGenerate',
-      query:,
+      query: query,
       body: payload(text_input),
       headers: HEADERS,
       cookies: { '__Secure-1PSID' => @token },
       timeout: @timeout
     )
-
+    puts "*********************"
+    puts "Google Answer:"
+    puts response
+    puts "*********************"
     handle_response(response)
   end
 
